@@ -1,0 +1,27 @@
+{
+  "name": "2048",
+  "version": "1.0.0",
+  "description": "Retrowave 2048 built with vanilla DOM and alien-signals",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "vitest run"
+  },
+  "keywords": [
+    "2048",
+    "alien-signals",
+    "vanilla-js",
+    "retrowave"
+  ],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "alien-signals": "^3.1.2"
+  },
+  "devDependencies": {
+    "vite": "^7.3.1",
+    "vitest": "^4.0.18"
+  }
+}
