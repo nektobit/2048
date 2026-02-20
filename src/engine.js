@@ -35,14 +35,24 @@ export function getAvailableCells(board) {
 }
 
 export function addRandomTile(board, random = Math.random) {
+  return addRandomTileWithMeta(board, random).board;
+}
+
+export function addRandomTileWithMeta(board, random = Math.random) {
   const available = getAvailableCells(board);
 
-  if (!available.length) return cloneBoard(board);
+  if (!available.length) {
+    return { board: cloneBoard(board), spawned: null };
+  }
 
   const nextBoard = cloneBoard(board);
   const target = available[Math.floor(random() * available.length)];
-  nextBoard[target.row][target.col] = random() < 0.9 ? 2 : 4;
-  return nextBoard;
+  const value = random() < 0.9 ? 2 : 4;
+  nextBoard[target.row][target.col] = value;
+  return {
+    board: nextBoard,
+    spawned: { row: target.row, col: target.col, value }
+  };
 }
 
 export function moveBoard(board, direction) {
@@ -99,14 +109,15 @@ export function applyMove(board, direction, random = Math.random) {
   const movedResult = moveBoard(board, direction);
 
   if (!movedResult.moved) {
-    return { ...movedResult, over: !movesAvailable(board) };
+    return { ...movedResult, over: !movesAvailable(board), spawned: null };
   }
 
-  const withSpawn = addRandomTile(movedResult.board, random);
+  const spawnResult = addRandomTileWithMeta(movedResult.board, random);
   return {
     ...movedResult,
-    board: withSpawn,
-    over: !movesAvailable(withSpawn)
+    board: spawnResult.board,
+    over: !movesAvailable(spawnResult.board),
+    spawned: spawnResult.spawned
   };
 }
 

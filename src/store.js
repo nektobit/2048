@@ -45,6 +45,7 @@ export function createGameStore(random = Math.random) {
   const score = signal(restored?.score ?? 0);
   const bestScore = signal(readBestScore());
   const gameStatus = signal(restored?.status ?? "playing");
+  const lastMoveMeta = signal(null);
 
   const hasWon = computed(() => gameStatus() === "won");
   const isGameOver = computed(() => gameStatus() === "over");
@@ -76,6 +77,7 @@ export function createGameStore(random = Math.random) {
       board(createInitialBoard(random));
       score(0);
       gameStatus("playing");
+      lastMoveMeta(null);
     });
   }
 
@@ -87,12 +89,18 @@ export function createGameStore(random = Math.random) {
   function move(direction) {
     if (isTerminated()) return false;
 
-    const result = applyMove(board(), direction, random);
+    const previousBoard = cloneBoard(board());
+    const result = applyMove(previousBoard, direction, random);
     if (!result.moved) return false;
 
     batch(() => {
       board(result.board);
       score(score() + result.scoreDelta);
+      lastMoveMeta({
+        direction,
+        previousBoard,
+        spawned: result.spawned
+      });
 
       if (result.won) {
         gameStatus("won");
@@ -113,6 +121,7 @@ export function createGameStore(random = Math.random) {
       board(cloneBoard(boardInput ?? createEmptyBoard()));
       score(scoreInput);
       gameStatus(statusInput);
+      lastMoveMeta(null);
     });
   }
 
@@ -121,6 +130,7 @@ export function createGameStore(random = Math.random) {
     score,
     bestScore,
     gameStatus,
+    lastMoveMeta,
     hasWon,
     isGameOver,
     newGame,

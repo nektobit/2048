@@ -179,7 +179,8 @@ h1 {
   color: #fff;
   font-weight: 800;
   font-size: clamp(1.1rem, 4.3vw, 2rem);
-  transition: transform 130ms ease-in-out, background 130ms ease;
+  will-change: transform;
+  transition: transform 150ms cubic-bezier(0.22, 0.61, 0.36, 1), background 140ms ease, opacity 120ms ease;
 }
 
 .tile span {
@@ -188,6 +189,10 @@ h1 {
 
 .tile-pop {
   animation: pop-in 150ms ease-out;
+}
+
+.tile-merge-fade {
+  opacity: 0;
 }
 
 .tile-2 {
