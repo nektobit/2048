@@ -6,7 +6,8 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "test": "vitest run"
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
   },
   "keywords": [
     "2048",
@@ -15,12 +16,13 @@
     "retrowave"
   ],
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "type": "module",
   "dependencies": {
     "alien-signals": "^3.1.2"
   },
   "devDependencies": {
+    "typescript": "^5.9.2",
     "vite": "^7.3.1",
     "vitest": "^4.0.18"
   }
